@@ -18,22 +18,23 @@ The script requires:
 Run the script `src/train_kraken_print.py`
 The script does the following:
 * Breaks the Genesis JSON file into chapters, and for each chapter:
-** Extracts the verses into text file, verse per line.
-** Generates an image, big enough for Kraken - 5000x8000px, using ImageMagic. Since ImageMagic doesn't seem to support LTR, the Hebrew words are reversed. It's simplistic, but works for pure-Hebrew text. For mixed text, bidirectional support is required.
-** Runs the Kraken *ketos* utility, to generate the HTML file, intended for manual transcription
-** Fills the HTML transcription file automatically, with the text from the matching text file.
+    * Extracts the verses into text file, verse per line.
+    * Generates an image, big enough for Kraken - 5000x8000px, using ImageMagic. Since ImageMagic doesn't seem to support LTR, the Hebrew words are reversed. It's simplistic, but works for pure-Hebrew text. For mixed text, bidirectional support is required.
+    * Runs the Kraken *ketos* utility, to generate the HTML file, intended for manual transcription
+    * Fills the HTML transcription file automatically, with the text from the matching text file.
+
 Running the script generates HTML files of the transcribed images to *./work/ketos_filled_\*.html*, along with byproducts.
 
 ## Extract lines image-text pairs
-Run the Kraken command:
+Now that the transcription file are ready, run the Kraken command:
 `ketos extract --reorder --output training --normalization NFD work/ketos_filled_*`
-The files will be generated into *training* directory.
+The files will be generated into *training/* directory.
 
 # Kraken training
 Get and run the Kraken Vagrant virtual machine. Make sure to run Vagrant in the same directory in which the *train_kraken_script.py* script was run:
-`vagrant init openphilology/kraken
-vagrant up
-vagrant ssh`
+`vagrant init openphilology/kraken`
+`vagrant up`
+`vagrant ssh`
 In the Kraken VM, run the training command:
 `./train.sh /vagrant/training heb_print`
 It will take the training set, and train a model called *heb_print*.
